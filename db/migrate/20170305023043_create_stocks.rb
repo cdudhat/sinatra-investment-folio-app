@@ -4,6 +4,7 @@ class CreateStocks < ActiveRecord::Migration
       t.string :name
       t.decimal :price, precision: 8, scale: 2
       t.integer :number
+      t.integer :user_id
     end
   end
 end

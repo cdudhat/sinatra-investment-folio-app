@@ -7,4 +7,7 @@ end
 use SessionsController
 use UsersController
 use StocksController
+use FundsController
+use ProductsController
+use PropertysController
 run ApplicationController

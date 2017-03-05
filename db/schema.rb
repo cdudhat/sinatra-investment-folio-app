@@ -15,26 +15,30 @@ ActiveRecord::Schema.define(version: 20170305030117) do
 
   create_table "funds", force: :cascade do |t|
     t.string  "name"
-    t.string  "type"
-    t.decimal "value", precision: 18, scale: 2
+    t.string  "category"
+    t.decimal "value",    precision: 18, scale: 2
+    t.integer "user_id"
   end
 
   create_table "products", force: :cascade do |t|
     t.string  "name"
-    t.string  "type"
-    t.decimal "value", precision: 18, scale: 2
+    t.string  "category"
+    t.decimal "value",    precision: 18, scale: 2
+    t.integer "user_id"
   end
 
   create_table "propertys", force: :cascade do |t|
     t.string  "name"
-    t.string  "type"
-    t.decimal "value", precision: 18, scale: 2
+    t.string  "category"
+    t.decimal "value",    precision: 18, scale: 2
+    t.integer "user_id"
   end
 
   create_table "stocks", force: :cascade do |t|
     t.string  "name"
-    t.decimal "price",  precision: 8, scale: 2
+    t.decimal "price",   precision: 8, scale: 2
     t.integer "number"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

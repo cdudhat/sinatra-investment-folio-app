@@ -6,7 +6,7 @@ class StocksController < ApplicationController
 
   post '/stock/new' do
     binding.pry
-    @stock = Stock.new(params)
+    @stock = Stock.new(name: params[:name], price: params[:price], number: params[:number])
   end
-  
+
 end
