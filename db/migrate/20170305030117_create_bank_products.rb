@@ -4,5 +4,6 @@ class CreateBankProducts < ActiveRecord::Migration
       t.string :name
       t.string :type
       t.decimal :value, precision: 18, scale: 2
+    end
   end
 end
