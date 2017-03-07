@@ -36,8 +36,9 @@ ActiveRecord::Schema.define(version: 20170305030117) do
 
   create_table "stocks", force: :cascade do |t|
     t.string  "name"
-    t.decimal "price",   precision: 8, scale: 2
+    t.decimal "price",   precision: 8,  scale: 2
     t.integer "number"
+    t.decimal "value",   precision: 18, scale: 2
     t.integer "user_id"
   end
 

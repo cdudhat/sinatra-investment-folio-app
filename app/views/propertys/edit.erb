@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit your Investment Property</title>
+  </head>
+  <body>
+    <h1>Investment Folio Manager</h1>
+    <h2>Edit your Investment Property</h2>
+    <form class="" action="/property/<%= @property.id %>" method="post">
+      <p>Property Name or Location: <input type="text" name="name" value="<%= @property.name %>"></p>
+      <p>Property Type:
+        <input type="radio" name="category" value="Residential" <%= 'checked' if @property.category=="Residential" %>> Residential
+        <input type="radio" name="category" value="Commercial" <%= 'checked' if @property.category=="Commercial" %>> Commercial </p>
+      <p>Property Value: $ <input type="decimal" name="value" value="<%= @property.value %>"></p>
+      <input type="submit" name="submit" value="Save Changes">
+    </form>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit your Bank Product Investment</title>
+  </head>
+  <body>
+    <h1>Investment Folio Manager</h1>
+    <h2>Edit your Bank Product Investment</h2>
+    <form class="" action="/product/<%= @product.id %>" method="post">
+      <p>Bank Name: <input type="text" name="name" value="<%= @product.name %>"></p>
+      <p>Investment Type: <input type="radio" name="category" value="CDs" <%= 'checked' if @product.category=="CDs" %>> CDs
+        <input type="radio" name="category" value="Savings Account" <%= 'checked' if @product.category=="Savings Account" %>> Savings Account
+        <input type="radio" name="category" value="Money Market Account" <%= 'checked' if @product.category=="Money Market Account" %>> Money Market Account </p>
+      <p>Investment Value: $ <input type="decimal" name="value" value="<%= @product.value %>"></p>
+      <input type="submit" name="submit" value="Save Changes">
+    </form>
+  </body>
+</html>
