@@ -7,10 +7,16 @@
   <body>
     <h1>Investment Folio Manager</h1>
     <h2>Edit your Stock Investment</h2>
+
+    <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+      <br></br>
+    <% end %>
+    
     <form class="" action="/stock/<%= @stock.id %>" method="post">
-      <p>Name of the Stock: <input type="text" name="name" value="<%= @stock.name %>"></p>
-      <p>Current Price per Share: $ <input type="decimal" name="price" value="<%= @stock.price %>"></p>
-      <p>Number of Shares: <input type="integer" name="number" value="<%= @stock.number %>"></p>
+      <p>Name of the Stock*: <input type="text" name="name" value="<%= @stock.name %>"></p>
+      <p>Current Price per Share*: $ <input type="decimal" name="price" value="<%= @stock.price %>"></p>
+      <p>Number of Shares*: <input type="integer" name="number" value="<%= @stock.number %>"></p>
       <input type="submit" name="submit" value="Save Changes">
     </form>
   </body>

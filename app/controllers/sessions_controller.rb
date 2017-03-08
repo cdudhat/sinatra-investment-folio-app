@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       redirect '/home'
     else
-      redirect '/failure'
+      flash[:message] = "You have entered incorrect login information. Please try again."
+      redirect '/login'
     end
   end
 

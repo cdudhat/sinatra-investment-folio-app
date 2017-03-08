@@ -7,11 +7,17 @@
   <body>
     <h1>Investment Folio Manager</h1>
     <h2>Edit your Retirement Fund Investment</h2>
+
+    <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+      <br></br>
+    <% end %>
+    
     <form class="" action="/fund/<%= @fund.id %>" method="post">
-      <p>Company Name or Financial Management Firm: <input type="text" name="name" value="<%= @fund.name %>"></p>
-      <p>Fund Type: <input type="radio" name="category" value="401k" <%= 'checked' if @fund.category=="401k" %>> 401k
+      <p>Company Name or Financial Management Firm*: <input type="text" name="name" value="<%= @fund.name %>"></p>
+      <p>Fund Type*: <input type="radio" name="category" value="401k" <%= 'checked' if @fund.category=="401k" %>> 401k
         <input type="radio" name="category" value="IRA" <%= 'checked' if @fund.category=="IRA" %>> IRA </p>
-      <p>Fund Value: $ <input type="decimal" name="value" value="<%= @fund.value %>"></p>
+      <p>Fund Value*: $ <input type="decimal" name="value" value="<%= @fund.value %>"></p>
       <input type="submit" name="submit" value="Save Changes">
     </form>
   </body>

@@ -1,7 +1,11 @@
 class FundsController < ApplicationController
 
   get '/fund/new' do
-    erb :'/funds/new'
+    if logged_in?
+      erb :'/funds/new'
+    else
+      redirect '/login'
+    end
   end
 
   post '/fund/new' do
@@ -14,13 +18,18 @@ class FundsController < ApplicationController
       @user.save
       redirect '/home'
     else
+      flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/fund/new'
     end
   end
 
   get '/fund/:id/edit' do
     @fund = Fund.find(params[:id])
-    erb :'/funds/edit'
+    if logged_in? && current_user.funds.include?(@fund)
+      erb :'/funds/edit'
+    else
+      redirect '/home'
+    end
   end
 
   post '/fund/:id' do
@@ -28,11 +37,14 @@ class FundsController < ApplicationController
     @fund = Fund.find(params[:id])
     @user = current_user
     @user.total_value -= @fund.value
-    @fund.update(name: params[:name], category: params[:category], value: params[:value])
-    @fund.save
-    @user.total_value += @fund.value
-    @user.save
-    redirect '/home'
+    if @fund.update(name: params[:name], category: params[:category], value: params[:value])
+      @user.total_value += @fund.value
+      @user.save
+      redirect '/home'
+    else
+      flash[:message] = "Empty fields are not permitted. Please try again."
+      redirect "/fund/#{params[:id]}/edit"
+    end
   end
 
   delete '/fund/:id' do
@@ -41,6 +53,7 @@ class FundsController < ApplicationController
     @user.total_value -= @fund.value
     @user.save
     @fund.destroy
+    flash[:message] = "You have successfully removed your Retirement Fund Investment."
     redirect '/home'
   end
 

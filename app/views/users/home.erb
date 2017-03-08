@@ -7,8 +7,13 @@
   <body>
     <h1>Investment Folio Manager</h1>
     <h2>Hi, <%= @user.name %>! Welcome to your Investments Page</h2>
-    <h3>Your Investments</h3>
-    <h3>Current Total Investment Value: $<%= @user.total_value %></h3>
+
+    <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+      <br></br>
+    <% end %>
+
+    <h3>Your Investments - Current Total Investments Value: $<%= @user.total_value %></h3>
 
     <!-- STOCKS -->
     <% if !@user.stocks.empty? %>
@@ -82,7 +87,7 @@
     <% end %>
 
     <hr>
-    <h3>Add a new Investment</h3>
+    <h3>Add a NEW Investment to your Portfolio -</h3>
     <p>
       <a href="/stock/new">Stock</a> |
       <a href="/product/new">Bank Product</a> |

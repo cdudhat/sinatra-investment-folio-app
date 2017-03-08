@@ -7,12 +7,18 @@
   <body>
     <h1>Investment Folio Manager</h1>
     <h2>Add a new Bank Product Investment to your Portfolio</h2>
+
+    <% if flash.has?(:message) %>
+      <%= flash[:message] %>
+      <br></br>
+    <% end %>
+
     <form class="" action="/product/new" method="post">
-      <p>Bank Name: <input type="text" name="name" value=""></p>
-      <p>Investment Type: <input type="radio" name="category" value="CDs"> CDs
+      <p>Bank Name*: <input type="text" name="name" value=""></p>
+      <p>Investment Type*: <input type="radio" name="category" value="CDs"> CDs
         <input type="radio" name="category" value="Savings Account"> Savings Account
         <input type="radio" name="category" value="Money Market Account"> Money Market Account </p>
-      <p>Investment Value: $ <input type="decimal" name="value" value=""></p>
+      <p>Investment Value*: $ <input type="decimal" name="value" value=""></p>
       <input type="submit" name="submit" value="Add to My Portfolio">
     </form>
   </body>

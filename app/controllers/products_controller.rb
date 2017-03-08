@@ -1,7 +1,11 @@
 class ProductsController < ApplicationController
 
   get '/product/new' do
-    erb :'/products/new'
+    if logged_in?
+      erb :'/products/new'
+    else
+      redirect '/login'
+    end
   end
 
   post '/product/new' do
@@ -14,13 +18,18 @@ class ProductsController < ApplicationController
       @user.save
       redirect '/home'
     else
+      flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/product/new'
     end
   end
 
   get '/product/:id/edit' do
     @product = Product.find(params[:id])
-    erb :'/products/edit'
+    if logged_in? && current_user.products.include?(@product)
+      erb :'/products/edit'
+    else
+      redirect '/home'
+    end
   end
 
   post '/product/:id' do
@@ -28,11 +37,14 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @user = current_user
     @user.total_value -= @product.value
-    @product.update(name: params[:name], category: params[:category], value: params[:value])
-    @product.save
-    @user.total_value += @product.value
-    @user.save
-    redirect '/home'
+    if @product.update(name: params[:name], category: params[:category], value: params[:value])
+      @user.total_value += @product.value
+      @user.save
+      redirect '/home'
+    else
+      flash[:message] = "Empty fields are not permitted. Please try again."
+      redirect "/product/#{params[:id]}/edit"
+    end
   end
 
   delete '/product/:id' do
@@ -41,6 +53,7 @@ class ProductsController < ApplicationController
     @user.total_value -= @product.value
     @user.save
     @product.destroy
+    flash[:message] = "You have successfully removed your Bank Product Investment."
     redirect '/home'
   end
 

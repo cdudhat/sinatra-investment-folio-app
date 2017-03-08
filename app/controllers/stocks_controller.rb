@@ -1,7 +1,11 @@
 class StocksController < ApplicationController
 
   get '/stock/new' do
-    erb :'/stocks/new'
+    if logged_in?
+      erb :'/stocks/new'
+    else
+      redirect '/login'
+    end
   end
 
   post '/stock/new' do
@@ -15,13 +19,18 @@ class StocksController < ApplicationController
       @user.save
       redirect '/home'
     else
+      flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/stock/new'
     end
   end
 
   get '/stock/:id/edit' do
     @stock = Stock.find(params[:id])
-    erb :'/stocks/edit'
+    if logged_in? && current_user.stocks.include?(@stock)
+      erb :'/stocks/edit'
+    else
+      redirect '/home'
+    end
   end
 
   post '/stock/:id' do
@@ -29,12 +38,17 @@ class StocksController < ApplicationController
     @stock = Stock.find(params[:id])
     @user = current_user
     @user.total_value -= @stock.value
-    @stock.update(name: params[:name], price: params[:price], number: params[:number])
-    @stock.value = @stock.price*@stock.number
-    @stock.save
-    @user.total_value += @stock.value
-    @user.save
-    redirect '/home'
+
+    if @stock.update(name: params[:name], price: params[:price], number: params[:number])
+      @stock.value = @stock.price*@stock.number
+      @stock.save
+      @user.total_value += @stock.value
+      @user.save
+      redirect '/home'
+    else
+      flash[:message] = "Empty fields are not permitted. Please try again."
+      redirect "/stock/#{params[:id]}/edit"
+    end
   end
 
   delete '/stock/:id' do
@@ -43,6 +57,7 @@ class StocksController < ApplicationController
     @user.total_value -= @stock.value
     @user.save
     @stock.destroy
+    flash[:message] = "You have successfully removed your Stock Investment."
     redirect '/home'
   end
 
