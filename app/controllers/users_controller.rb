@@ -6,12 +6,14 @@ class UsersController < ApplicationController
 
   post "/signup" do
     #binding.pry
-    user = User.new(name: params[:name], email: params[:email], password: params[:password], total_value: 0)
-    if user.save
+    if User.find_by(email: params[:email])
+      flash[:message] = "This email is already linked to an existing account. Please Login."
+      redirect '/login'
+    elsif user = User.create(name: params[:name], email: params[:email], password: params[:password], total_value: 0)
       session[:user_id] = user.id
       redirect '/home'
     else
-      redirect '/failure'
+      redirect '/'
     end
   end
 
@@ -23,10 +25,6 @@ class UsersController < ApplicationController
       @user = User.find(session[:user_id])
       erb :'/users/home'
     end
-  end
-
-  get '/failure' do
-    erb :'/users/failure'
   end
 
 end
