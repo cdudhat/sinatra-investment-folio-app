@@ -24,10 +24,16 @@ class ProductsController < ApplicationController
   end
 
   get '/product/:id/edit' do
-    @product = Product.find(params[:id])
-    if logged_in? && current_user.products.include?(@product)
-      erb :'/products/edit'
+    if Product.exists?(params[:id])
+      @product = Product.find(params[:id])
+      if logged_in? && current_user.products.include?(@product)
+        erb :'/products/edit'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
     else
+      flash[:message] = "The page you requested does not exist."
       redirect '/home'
     end
   end

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Welcome to your Investment Page</title>
+
   </head>
   <body>
     <h1>Investment Folio Manager</h1>
@@ -21,7 +22,7 @@
     <% end %>
     <% @user.stocks.each do |stock| %>
       <ul>
-        <li>Company Name: <a href="/stock/<%= stock.id %>/edit"><%= stock.name %></a></li>
+        <li>Company Name/Ticker: <a href="/stock/<%= stock.id %>/edit"><%= stock.name %></a></li>
         <li>Price per Share: $<%= stock.price %></li>
         <li>Number of Shares: <%= stock.number %></li>
         <form method="post" action="/stock/<%= stock.id %>">
@@ -96,6 +97,8 @@
     </p>
     <hr>
     <br>
-    <a href="/logout">Logout</a>
+    <form class="" action="/logout">
+      <input type="submit" value="Logout">
+    </form>
   </body>
 </html>

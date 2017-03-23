@@ -24,10 +24,16 @@ class FundsController < ApplicationController
   end
 
   get '/fund/:id/edit' do
-    @fund = Fund.find(params[:id])
-    if logged_in? && current_user.funds.include?(@fund)
-      erb :'/funds/edit'
+    if Fund.exists?(params[:id])
+      @fund = Fund.find(params[:id])
+      if logged_in? && current_user.funds.include?(@fund)
+        erb :'/funds/edit'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
     else
+      flash[:message] = "The page you requested does not exist."
       redirect '/home'
     end
   end

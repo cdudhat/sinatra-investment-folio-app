@@ -25,10 +25,16 @@ class StocksController < ApplicationController
   end
 
   get '/stock/:id/edit' do
-    @stock = Stock.find(params[:id])
-    if logged_in? && current_user.stocks.include?(@stock)
-      erb :'/stocks/edit'
+    if Stock.exists?(params[:id])
+      @stock = Stock.find(params[:id])
+      if logged_in? && current_user.stocks.include?(@stock)
+        erb :'/stocks/edit'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
     else
+      flash[:message] = "The page you requested does not exist."
       redirect '/home'
     end
   end

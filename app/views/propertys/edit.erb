@@ -12,7 +12,7 @@
       <%= flash[:message] %>
       <br></br>
     <% end %>
-    
+
     <form class="" action="/property/<%= @property.id %>" method="post">
       <p>Property Name or Location*: <input type="text" name="name" value="<%= @property.name %>"></p>
       <p>Property Type*:
@@ -21,5 +21,9 @@
       <p>Property Value*: $ <input type="decimal" name="value" value="<%= @property.value %>"></p>
       <input type="submit" name="submit" value="Save Changes">
     </form>
+
+    <br><hr><br>
+    <p>Go Back to the <a href="/home">Home</a> page</p>
+
   </body>
 </html>

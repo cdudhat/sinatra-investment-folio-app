@@ -9,11 +9,15 @@ class UsersController < ApplicationController
     if User.find_by(email: params[:email])
       flash[:message] = "This email is already linked to an existing account. Please Login."
       redirect '/login'
-    elsif user = User.create(name: params[:name], email: params[:email], password: params[:password], total_value: 0)
-      session[:user_id] = user.id
-      redirect '/home'
     else
-      redirect '/'
+      user = User.new(name: params[:name], email: params[:email], password: params[:password], total_value: 0)
+      if user.save
+        session[:user_id] = user.id
+        redirect '/home'
+      else
+        flash[:message] = "Empty fields are not permitted. Please try again."
+        redirect '/signup'
+      end
     end
   end
 

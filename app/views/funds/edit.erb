@@ -12,7 +12,7 @@
       <%= flash[:message] %>
       <br></br>
     <% end %>
-    
+
     <form class="" action="/fund/<%= @fund.id %>" method="post">
       <p>Company Name or Financial Management Firm*: <input type="text" name="name" value="<%= @fund.name %>"></p>
       <p>Fund Type*: <input type="radio" name="category" value="401k" <%= 'checked' if @fund.category=="401k" %>> 401k
@@ -20,5 +20,9 @@
       <p>Fund Value*: $ <input type="decimal" name="value" value="<%= @fund.value %>"></p>
       <input type="submit" name="submit" value="Save Changes">
     </form>
+
+    <br><hr><br>
+    <p>Go Back to the <a href="/home">Home</a> page</p>
+    
   </body>
 </html>

@@ -24,10 +24,16 @@ class PropertysController < ApplicationController
   end
 
   get '/property/:id/edit' do
-    @property = Property.find(params[:id])
-    if logged_in? && current_user.propertys.include?(@property)
-      erb :'/propertys/edit'
+    if Property.exists?(params[:id])
+      @property = Property.find(params[:id])
+      if logged_in? && current_user.propertys.include?(@property)
+        erb :'/propertys/edit'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
     else
+      flash[:message] = "The page you requested does not exist."
       redirect '/home'
     end
   end
