@@ -11,9 +11,10 @@ class StocksController < ApplicationController
   post '/stock/new' do
     #binding.pry
     @stock = Stock.new(name: params[:name], price: params[:price], number: params[:number], value: 0)
-    @stock.value = @stock.price*@stock.number
     @user = current_user
     if @stock.save
+      @stock.value = @stock.price*@stock.number
+      @stock.save
       @user.stocks << @stock
       @user.total_value += @stock.value
       @user.save
