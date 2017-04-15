@@ -1,0 +1,13 @@
+<% @title="Investment Property Details" %>
+
+<p>Property Name / Location: <%= @property.name %></a></p>
+<p>Property Type: <%= @property.category %></p>
+<p>Property Value: $<%= @property.value %></p>
+
+<form class="" action="/property/<%= @property.id %>/edit">
+  <input type="submit" value="Edit">
+</form>
+<form method="post" action="/property/<%= @property.id %>">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" id="delete" value="Delete">
+</form>

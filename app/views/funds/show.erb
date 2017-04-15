@@ -1,0 +1,13 @@
+<% @title="Retirement Fund Investment Details" %>
+
+<p>Company / Financial Management Firm: <%= @fund.name %></a></p>
+<p>Fund Type: <%= @fund.category %></p>
+<p>Fund Value: $<%= @fund.value %></p>
+
+<form class="" action="/fund/<%= @fund.id %>/edit">
+  <input type="submit" value="Edit">
+</form>
+<form method="post" action="/fund/<%= @fund.id %>">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" id="delete" value="Delete">
+</form>

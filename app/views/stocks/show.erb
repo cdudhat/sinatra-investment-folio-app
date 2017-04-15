@@ -1,0 +1,13 @@
+<% @title="Stock Investment Details" %>
+
+<p>Name/Ticker of the Stock: <%= @stock.name %></p>
+<p>Current Price per Share: $<%= @stock.price %></p>
+<p>Number of Shares: <%= @stock.number %></p>
+
+<form class="" action="/stock/<%= @stock.id %>/edit">
+  <input type="submit" value="Edit">
+</form>
+<form method="post" action="/stock/<%= @stock.id %>">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" id="delete" value="Delete">
+</form>
