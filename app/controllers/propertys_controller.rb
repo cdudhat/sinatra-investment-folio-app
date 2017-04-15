@@ -9,7 +9,6 @@ class PropertysController < ApplicationController
   end
 
   post '/property/new' do
-    #binding.pry
     @property = Property.new(name: params[:name], category: params[:category], value: params[:value])
     @user = current_user
     if @property.save
@@ -20,6 +19,21 @@ class PropertysController < ApplicationController
     else
       flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/property/new'
+    end
+  end
+
+  get '/property/:id' do
+    if Property.exists?(params[:id])
+      @property = Property.find(params[:id])
+      if logged_in? && current_user.propertys.include?(@property)
+        erb :'/propertys/show'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
+    else
+      flash[:message] = "The page you requested does not exist."
+      redirect '/home'
     end
   end
 
@@ -38,8 +52,7 @@ class PropertysController < ApplicationController
     end
   end
 
-  post '/property/:id' do
-    #binding.pry
+  put '/property/:id' do
     @property = Property.find(params[:id])
     @user = current_user
     @user.total_value -= @property.value

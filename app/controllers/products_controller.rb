@@ -9,7 +9,6 @@ class ProductsController < ApplicationController
   end
 
   post '/product/new' do
-    #binding.pry
     @product = Product.new(name: params[:name], category: params[:category], value: params[:value])
     @user = current_user
     if @product.save
@@ -20,6 +19,21 @@ class ProductsController < ApplicationController
     else
       flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/product/new'
+    end
+  end
+
+  get '/product/:id' do
+    if Product.exists?(params[:id])
+      @product = Product.find(params[:id])
+      if logged_in? && current_user.products.include?(@product)
+        erb :'/products/show'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
+    else
+      flash[:message] = "The page you requested does not exist."
+      redirect '/home'
     end
   end
 
@@ -38,8 +52,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  post '/product/:id' do
-    #binding.pry
+  put '/product/:id' do
     @product = Product.find(params[:id])
     @user = current_user
     @user.total_value -= @product.value

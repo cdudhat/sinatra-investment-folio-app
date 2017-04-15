@@ -12,9 +12,12 @@ class ApplicationController < Sinatra::Base
     use Rack::Flash, sweep: true
   end
 
-
   get '/' do
-    erb :index
+    if logged_in?
+      redirect '/home'
+    else
+      redirect '/login'
+    end
   end
 
   helpers do

@@ -1,28 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Edit your Retirement Fund Investment</title>
-  </head>
-  <body>
-    <h1>Investment Folio Manager</h1>
-    <h2>Edit your Retirement Fund Investment</h2>
+<% @title="Update your Retirement Fund Investment" %>
 
-    <% if flash.has?(:message) %>
-      <%= flash[:message] %>
-      <br></br>
-    <% end %>
-
-    <form class="" action="/fund/<%= @fund.id %>" method="post">
-      <p>Company Name or Financial Management Firm*: <input type="text" name="name" value="<%= @fund.name %>"></p>
-      <p>Fund Type*: <input type="radio" name="category" value="401k" <%= 'checked' if @fund.category=="401k" %>> 401k
-        <input type="radio" name="category" value="IRA" <%= 'checked' if @fund.category=="IRA" %>> IRA </p>
-      <p>Fund Value*: $ <input type="decimal" name="value" value="<%= @fund.value %>"></p>
-      <input type="submit" name="submit" value="Save Changes">
-    </form>
-
-    <br><hr><br>
-    <p>Go Back to the <a href="/home">Home</a> page</p>
-    
-  </body>
-</html>
+<form class="" action="/fund/<%= @fund.id %>" method="POST">
+  <input id="hidden" type="hidden" name="_method" value="PUT">
+  <p>Company Name or Financial Management Firm*: <input type="text" name="name" value="<%= @fund.name %>"></p>
+  <p>Fund Type*: <input type="radio" name="category" value="401k" <%= 'checked' if @fund.category=="401k" %>> 401k
+    <input type="radio" name="category" value="IRA" <%= 'checked' if @fund.category=="IRA" %>> IRA </p>
+  <p>Fund Value*: $ <input type="decimal" name="value" value="<%= @fund.value %>"></p>
+  <input type="submit" name="submit" value="Save Changes">
+</form>

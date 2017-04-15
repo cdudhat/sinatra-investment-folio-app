@@ -1,104 +1,107 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Welcome to your Investment Page</title>
+<% @title="Welcome to your Investments Page" %>
+<% @heading="Hi, " + @user.name.to_s + "! Welcome to your Investments Page" %>
 
-  </head>
-  <body>
-    <h1>Investment Folio Manager</h1>
-    <h2>Hi, <%= @user.name %>! Welcome to your Investments Page</h2>
+<h3>Your Investments - Current Total Investments Value: $<%= @user.total_value %></h3>
 
-    <% if flash.has?(:message) %>
-      <%= flash[:message] %>
-      <br></br>
-    <% end %>
+<!-- STOCKS -->
+<% if !@user.stocks.empty? %>
+  <h3>Stocks</h3>
+  <% @user.stocks.each do |stock| %>
+    <ul>
+      <li>Company Name/Ticker: <%= stock.name %></a></li>
+      <li>Price per Share: $<%= stock.price %></li>
+      <li>Number of Shares: <%= stock.number %></li>
+    </ul>
 
-    <h3>Your Investments - Current Total Investments Value: $<%= @user.total_value %></h3>
-
-    <!-- STOCKS -->
-    <% if !@user.stocks.empty? %>
-      <h3>Stocks</h3>
-    <% end %>
-    <% @user.stocks.each do |stock| %>
-      <ul>
-        <li>Company Name/Ticker: <a href="/stock/<%= stock.id %>/edit"><%= stock.name %></a></li>
-        <li>Price per Share: $<%= stock.price %></li>
-        <li>Number of Shares: <%= stock.number %></li>
-        <form method="post" action="/stock/<%= stock.id %>">
-          <input id="hidden" type="hidden" name="_method" value="delete">
-          <input type="submit" id="delete" value="Delete">
-        </form>
-        <br>
-      </ul>
-    <% end %>
-
-    <!-- BANK PRODUCTS -->
-    <% if !@user.products.empty? %>
-      <hr>
-      <h3>Bank Products</h3>
-    <% end %>
-    <% @user.products.each do |product| %>
-      <ul>
-        <li>Bank Name: <a href="/product/<%= product.id %>/edit"><%= product.name %></a></li>
-        <li>Investment Type: <%= product.category %></li>
-        <li>Investment Value: $<%= product.value %></li>
-        <form method="post" action="/product/<%= product.id %>">
-          <input id="hidden" type="hidden" name="_method" value="delete">
-          <input type="submit" id="delete" value="Delete">
-        </form>
-        <br>
-      </ul>
-    <% end %>
-
-    <!-- RETIREMENT FUNDS -->
-    <% if !@user.funds.empty? %>
-      <hr>
-      <h3>Retirement Funds</h3>
-    <% end %>
-    <% @user.funds.each do |fund| %>
-      <ul>
-        <li>Company / Financial Management Firm: <a href="/fund/<%= fund.id %>/edit"><%= fund.name %></a></li>
-        <li>Fund Type: <%= fund.category %></li>
-        <li>Fund Value: $<%= fund.value %></li>
-        <form method="post" action="/fund/<%= fund.id %>">
-          <input id="hidden" type="hidden" name="_method" value="delete">
-          <input type="submit" id="delete" value="Delete">
-        </form>
-        <br>
-      </ul>
-    <% end %>
-
-    <!-- PROPERTYS -->
-    <% if !@user.propertys.empty? %>
-      <hr>
-      <h3>Investment Properties</h3>
-    <% end %>
-    <% @user.propertys.each do |property| %>
-      <ul>
-        <li>Property Name / Location: <a href="/property/<%= property.id %>/edit"><%= property.name %></a></li>
-        <li>Property Type: <%= property.category %></li>
-        <li>Property Value: $<%= property.value %></li>
-        <form method="post" action="/property/<%= property.id %>">
-          <input id="hidden" type="hidden" name="_method" value="delete">
-          <input type="submit" id="delete" value="Delete">
-        </form>
-        <br>
-      </ul>
-    <% end %>
-
-    <hr>
-    <h3>Add a NEW Investment to your Portfolio -</h3>
-    <p>
-      <a href="/stock/new">Stock</a> |
-      <a href="/product/new">Bank Product</a> |
-      <a href="/fund/new">Retirement Fund</a> |
-      <a href="/property/new">Investment Property</a>
-    </p>
-    <hr>
-    <br>
-    <form class="" action="/logout">
-      <input type="submit" value="Logout">
+    <form class="" action="/stock/<%= stock.id %>">
+      <input type="submit" value="View">
     </form>
-  </body>
-</html>
+    <form class="" action="/stock/<%= stock.id %>/edit">
+      <input type="submit" value="Edit">
+    </form>
+    <form method="post" action="/stock/<%= stock.id %>">
+      <input id="hidden" type="hidden" name="_method" value="DELETE">
+      <input type="submit" id="delete" value="Delete">
+    </form>
+
+    <br /><br />
+  <% end %>
+<% end %>
+
+<!-- BANK PRODUCTS -->
+<% if !@user.products.empty? %>
+  <hr>
+  <h3>Bank Products</h3>
+  <% @user.products.each do |product| %>
+    <ul>
+      <li>Bank Name: <%= product.name %></a></li>
+      <li>Investment Type: <%= product.category %></li>
+      <li>Investment Value: $<%= product.value %></li>
+    </ul>
+
+    <form class="" action="/product/<%= product.id %>">
+      <input type="submit" value="View">
+    </form>
+    <form class="" action="/product/<%= product.id %>/edit">
+      <input type="submit" value="Edit">
+    </form>
+    <form method="post" action="/product/<%= product.id %>">
+      <input id="hidden" type="hidden" name="_method" value="DELETE">
+      <input type="submit" id="delete" value="Delete">
+    </form>
+
+    <br /><br />
+  <% end %>
+<% end %>
+
+<!-- RETIREMENT FUNDS -->
+<% if !@user.funds.empty? %>
+  <hr>
+  <h3>Retirement Funds</h3>
+  <% @user.funds.each do |fund| %>
+    <ul>
+      <li>Company / Financial Management Firm: <%= fund.name %></a></li>
+      <li>Fund Type: <%= fund.category %></li>
+      <li>Fund Value: $<%= fund.value %></li>
+    </ul>
+
+      <form class="" action="/fund/<%= fund.id %>">
+        <input type="submit" value="View">
+      </form>
+      <form class="" action="/fund/<%= fund.id %>/edit">
+        <input type="submit" value="Edit">
+      </form>
+      <form method="post" action="/fund/<%= fund.id %>">
+        <input id="hidden" type="hidden" name="_method" value="DELETE">
+        <input type="submit" id="delete" value="Delete">
+      </form>
+
+      <br /><br />
+  <% end %>
+<% end %>
+
+<!-- PROPERTYS -->
+<% if !@user.propertys.empty? %>
+  <hr>
+  <h3>Investment Properties</h3>
+  <% @user.propertys.each do |property| %>
+    <ul>
+      <li>Property Name / Location: <%= property.name %></a></li>
+      <li>Property Type: <%= property.category %></li>
+      <li>Property Value: $<%= property.value %></li>
+    </ul>
+
+      <form class="" action="/property/<%= property.id %>">
+        <input type="submit" value="View">
+      </form>
+      <form class="" action="/property/<%= property.id %>/edit">
+        <input type="submit" value="Edit">
+      </form>
+      <form method="post" action="/property/<%= property.id %>">
+        <input id="hidden" type="hidden" name="_method" value="DELETE">
+        <input type="submit" id="delete" value="Delete">
+      </form>
+
+      <br /><br />
+  <% end %>
+<% end %>

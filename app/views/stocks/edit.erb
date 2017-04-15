@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Edit your current Stock Investment</title>
-  </head>
-  <body>
-    <h1>Investment Folio Manager</h1>
-    <h2>Edit your Stock Investment</h2>
+<% @title="Update your Stock Investment" %>
 
-    <% if flash.has?(:message) %>
-      <%= flash[:message] %>
-      <br></br>
-    <% end %>
-
-    <form class="" action="/stock/<%= @stock.id %>" method="post">
-      <p>Name/Ticker of the Stock*: <input type="text" name="name" value="<%= @stock.name %>"></p>
-      <p>Current Price per Share*: $ <input type="decimal" name="price" value="<%= @stock.price %>"></p>
-      <p>Number of Shares*: <input type="integer" name="number" value="<%= @stock.number %>"></p>
-      <input type="submit" name="submit" value="Save Changes">
-    </form>
-
-    <br><hr><br>
-    <p>Go Back to the <a href="/home">Home</a> page</p>
-
-  </body>
-</html>
+<form class="" action="/stock/<%= @stock.id %>" method="POST">
+  <input id="hidden" type="hidden" name="_method" value="PUT">
+  <p>Name/Ticker of the Stock*: <input type="text" name="name" value="<%= @stock.name %>"></p>
+  <p>Current Price per Share*: $ <input type="decimal" name="price" value="<%= @stock.price %>"></p>
+  <p>Number of Shares*: <input type="integer" name="number" value="<%= @stock.number %>"></p>
+  <input type="submit" name="submit" value="Save Changes">
+</form>

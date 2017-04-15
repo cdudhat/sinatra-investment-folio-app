@@ -1,29 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Add a new Bank Product Investment</title>
-  </head>
-  <body>
-    <h1>Investment Folio Manager</h1>
-    <h2>Add a new Bank Product Investment to your Portfolio</h2>
+<% @title="Add a New Bank Product Investment" %>
 
-    <% if flash.has?(:message) %>
-      <%= flash[:message] %>
-      <br></br>
-    <% end %>
-
-    <form class="" action="/product/new" method="post">
-      <p>Bank Name*: <input type="text" name="name" value=""></p>
-      <p>Investment Type*: <input type="radio" name="category" value="CD"> CD
-        <input type="radio" name="category" value="Savings Account"> Savings Account
-        <input type="radio" name="category" value="Money Market Account"> Money Market Account </p>
-      <p>Investment Value*: $ <input type="decimal" name="value" value=""></p>
-      <input type="submit" name="submit" value="Add to My Portfolio">
-    </form>
-
-    <br><hr><br>
-    <p>Go Back to the <a href="/home">Home</a> page</p>
-    
-  </body>
-</html>
+<form class="" action="/product/new" method="POST">
+  <p>Bank Name*: <input type="text" name="name" value=""></p>
+  <p>Investment Type*: <input type="radio" name="category" value="CD"> CD
+    <input type="radio" name="category" value="Savings Account"> Savings Account
+    <input type="radio" name="category" value="Money Market Account"> Money Market Account </p>
+  <p>Investment Value*: $ <input type="decimal" name="value" value=""></p>
+  <input type="submit" name="submit" value="Add to My Portfolio">
+</form>

@@ -1,28 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Add a new Investment Property</title>
-  </head>
-  <body>
-    <h1>Investment Folio Manager</h1>
-    <h2>Add a new Investment Property to your Portfolio</h2>
+<% @title="Add a new Investment Property" %>
 
-    <% if flash.has?(:message) %>
-      <%= flash[:message] %>
-      <br></br>
-    <% end %>
-
-    <form class="" action="/property/new" method="post">
-      <p>Property Name or Location*: <input type="text" name="name" value=""></p>
-      <p>Property Type*: <input type="radio" name="category" value="Residential"> Residential
-        <input type="radio" name="category" value="Commercial"> Commercial </p>
-      <p>Property Value*: $ <input type="decimal" name="value" value=""></p>
-      <input type="submit" name="submit" value="Add to My Portfolio">
-    </form>
-
-    <br><hr><br>
-    <p>Go Back to the <a href="/home">Home</a> page</p>
-
-  </body>
-</html>
+<form class="" action="/property/new" method="POST">
+  <p>Property Name or Location*: <input type="text" name="name" value=""></p>
+  <p>Property Type*: <input type="radio" name="category" value="Residential"> Residential
+    <input type="radio" name="category" value="Commercial"> Commercial </p>
+  <p>Property Value*: $ <input type="decimal" name="value" value=""></p>
+  <input type="submit" name="submit" value="Add to My Portfolio">
+</form>

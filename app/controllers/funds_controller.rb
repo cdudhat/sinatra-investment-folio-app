@@ -9,7 +9,6 @@ class FundsController < ApplicationController
   end
 
   post '/fund/new' do
-    #binding.pry
     @fund = Fund.new(name: params[:name], category: params[:category], value: params[:value])
     @user = current_user
     if @fund.save
@@ -20,6 +19,21 @@ class FundsController < ApplicationController
     else
       flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/fund/new'
+    end
+  end
+
+  get '/fund/:id' do
+    if Fund.exists?(params[:id])
+      @fund = Fund.find(params[:id])
+      if logged_in? && current_user.funds.include?(@fund)
+        erb :'/funds/show'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
+    else
+      flash[:message] = "The page you requested does not exist."
+      redirect '/home'
     end
   end
 
@@ -38,8 +52,7 @@ class FundsController < ApplicationController
     end
   end
 
-  post '/fund/:id' do
-    #binding.pry
+  put '/fund/:id' do
     @fund = Fund.find(params[:id])
     @user = current_user
     @user.total_value -= @fund.value

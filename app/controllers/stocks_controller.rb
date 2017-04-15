@@ -9,7 +9,6 @@ class StocksController < ApplicationController
   end
 
   post '/stock/new' do
-    #binding.pry
     @stock = Stock.new(name: params[:name], price: params[:price], number: params[:number], value: 0)
     @user = current_user
     if @stock.save
@@ -22,6 +21,21 @@ class StocksController < ApplicationController
     else
       flash[:message] = "The information you entered was incomplete. Please try again."
       redirect '/stock/new'
+    end
+  end
+
+  get '/stock/:id' do
+    if Stock.exists?(params[:id])
+      @stock = Stock.find(params[:id])
+      if logged_in? && current_user.stocks.include?(@stock)
+        erb :'/stocks/show'
+      else
+        flash[:message] = "The page you requested does not exist."
+        redirect '/home'
+      end
+    else
+      flash[:message] = "The page you requested does not exist."
+      redirect '/home'
     end
   end
 
@@ -40,8 +54,7 @@ class StocksController < ApplicationController
     end
   end
 
-  post '/stock/:id' do
-    #binding.pry
+  put '/stock/:id' do
     @stock = Stock.find(params[:id])
     @user = current_user
     @user.total_value -= @stock.value
