@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   end
 
   post "/signup" do
-    #binding.pry
     if User.find_by(email: params[:email])
       flash[:message] = "This email is already linked to an existing account. Please Login."
       redirect '/login'
@@ -22,7 +21,6 @@ class UsersController < ApplicationController
   end
 
   get '/home' do
-    #binding.pry
     if !logged_in?
       redirect '/login'
     else

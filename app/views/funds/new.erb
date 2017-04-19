@@ -1,8 +1,10 @@
 <% @title="Add a New Retirement Fund Investment" %>
 
-<form class="" action="/fund/new" method="POST">
-  <p>Company Name or Financial Management Firm*: <input type="text" name="name" value=""></p>
-  <p>Fund Type*: <input type="radio" name="category" value="401k"> 401k <input type="radio" name="category" value="IRA"> IRA </p>
-  <p>Fund Value*: $ <input type="decimal" name="value" value=""></p>
-  <input type="submit" name="submit" value="Add to My Portfolio">
-</form>
+<div class="detail">
+  <form class="" action="/fund/new" method="POST">
+    <p>Company Name or Financial Management Firm*: <input type="text" name="name" value=""></p>
+    <p>Fund Type*: <input type="radio" name="category" value="401k"> 401k <input type="radio" name="category" value="IRA"> IRA </p>
+    <p>Fund Value*: $ <input type="decimal" name="value" value=""></p>
+    <input type="submit" name="submit" value="Add to My Portfolio">
+  </form>
+</div>

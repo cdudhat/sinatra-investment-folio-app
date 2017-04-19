@@ -5,13 +5,20 @@ class SessionsController < ApplicationController
   end
 
   post '/login' do
-    @user = User.find_by(email: params[:email])
-    if @user && @user.authenticate(params[:password])
-      session[:user_id] = @user.id
-      redirect '/home'
-    else
-      flash[:message] = "You have entered incorrect login information. Please try again."
+    if @user = User.find_by(email: params[:email])
+      if @user.authenticate(params[:password])
+        session[:user_id] = @user.id
+        redirect '/home'
+      else
+        flash[:message] = "You have entered incorrect login information. Please try again."
+        redirect '/login'
+      end
+    elsif params[:email].empty?
+      flash[:message] = "Empty fields are not permitted. Please try again."
       redirect '/login'
+    else
+      flash[:message] = "There is no account linked with this email address. Signup for a new account."
+      redirect '/signup'
     end
   end
 

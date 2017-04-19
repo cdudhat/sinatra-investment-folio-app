@@ -1,11 +1,13 @@
 <% @title="Update your Bank Product Investment" %>
 
-<form class="" action="/product/<%= @product.id %>" method="POST">
-  <input id="hidden" type="hidden" name="_method" value="PUT">
-  <p>Bank Name*: <input type="text" name="name" value="<%= @product.name %>"></p>
-  <p>Investment Type*: <input type="radio" name="category" value="CD" <%= 'checked' if @product.category=="CD" %>> CD
-    <input type="radio" name="category" value="Savings Account" <%= 'checked' if @product.category=="Savings Account" %>> Savings Account
-    <input type="radio" name="category" value="Money Market Account" <%= 'checked' if @product.category=="Money Market Account" %>> Money Market Account </p>
-  <p>Investment Value*: $ <input type="decimal" name="value" value="<%= @product.value %>"></p>
-  <input type="submit" name="submit" value="Save Changes">
-</form>
+<div class="detail">
+  <form class="" action="/product/<%= @product.id %>" method="POST">
+    <input id="hidden" type="hidden" name="_method" value="PUT">
+    <p>Bank Name*: <input type="text" name="name" value="<%= @product.name %>"></p>
+    <p>Investment Type*: <input type="radio" name="category" value="CD" <%= 'checked' if @product.category=="CD" %>> CD
+      <input type="radio" name="category" value="Savings Account" <%= 'checked' if @product.category=="Savings Account" %>> Savings Account
+      <input type="radio" name="category" value="Money Market Account" <%= 'checked' if @product.category=="Money Market Account" %>> Money Market Account </p>
+      <p>Investment Value*: $ <input type="decimal" name="value" value="<%= @product.value %>"></p>
+      <input type="submit" name="submit" value="Save Changes">
+  </form>
+</div>

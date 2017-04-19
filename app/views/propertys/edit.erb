@@ -1,11 +1,13 @@
 <% @title="Update your Investment Property" %>
 
-<form class="" action="/property/<%= @property.id %>" method="POST">
-  <input id="hidden" type="hidden" name="_method" value="PUT">
-  <p>Property Name or Location*: <input type="text" name="name" value="<%= @property.name %>"></p>
-  <p>Property Type*:
-    <input type="radio" name="category" value="Residential" <%= 'checked' if @property.category=="Residential" %>> Residential
-    <input type="radio" name="category" value="Commercial" <%= 'checked' if @property.category=="Commercial" %>> Commercial </p>
-  <p>Property Value*: $ <input type="decimal" name="value" value="<%= @property.value %>"></p>
-  <input type="submit" name="submit" value="Save Changes">
-</form>
+<div class="detail">
+  <form class="" action="/property/<%= @property.id %>" method="POST">
+    <input id="hidden" type="hidden" name="_method" value="PUT">
+    <p>Property Name or Location*: <input type="text" name="name" value="<%= @property.name %>"></p>
+    <p>Property Type*:
+      <input type="radio" name="category" value="Residential" <%= 'checked' if @property.category=="Residential" %>> Residential
+      <input type="radio" name="category" value="Commercial" <%= 'checked' if @property.category=="Commercial" %>> Commercial </p>
+      <p>Property Value*: $ <input type="decimal" name="value" value="<%= @property.value %>"></p>
+      <input type="submit" name="submit" value="Save Changes">
+  </form>
+</div>

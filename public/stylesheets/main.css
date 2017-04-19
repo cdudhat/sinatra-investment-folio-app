@@ -32,10 +32,16 @@
 
   .left {
     float:left;
+    margin: 0 0 2px 0;
   }
 
   .right {
     float: right;
+    margin: 0 0 2px 0;
+  }
+
+  .detail {
+    margin: 0 0 20px 0;
   }
 
   h1 {
@@ -94,7 +100,7 @@
 
   footer.branding {
     border-top: 2px solid #ccc;
-    margin-top: 20px;
+    margin-top: 0px;
     padding-top: 20px;
   }
 }

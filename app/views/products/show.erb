@@ -1,13 +1,15 @@
 <% @title="Bank Product Investment Details" %>
 
-<p>Bank Name: <%= @product.name %></p>
-<p>Investment Type: <%= @product.category %></p>
-<p>Investment Value: $<%= @product.value %></p>
+<div class="detail">
+  <p>Bank Name: <%= @product.name %></p>
+  <p>Investment Type: <%= @product.category %></p>
+  <p>Investment Value: $<%= @product.value %></p>
 
-<form class="" action="/product/<%= @product.id %>/edit">
-  <input type="submit" value="Edit">
-</form>
-<form method="post" action="/product/<%= @product.id %>">
-  <input id="hidden" type="hidden" name="_method" value="delete">
-  <input type="submit" id="delete" value="Delete">
-</form>
+  <form class="" action="/product/<%= @product.id %>/edit">
+    <input type="submit" value="Edit">
+  </form>
+  <form method="POST" action="/product/<%= @product.id %>">
+    <input id="hidden" type="hidden" name="_method" value="DELETE">
+    <input type="submit" id="delete" value="Delete">
+  </form>
+</div>

@@ -1,9 +1,11 @@
-<% @title="Add a new Investment Property" %>
+<% @title="Add a New Investment Property" %>
 
-<form class="" action="/property/new" method="POST">
-  <p>Property Name or Location*: <input type="text" name="name" value=""></p>
-  <p>Property Type*: <input type="radio" name="category" value="Residential"> Residential
-    <input type="radio" name="category" value="Commercial"> Commercial </p>
-  <p>Property Value*: $ <input type="decimal" name="value" value=""></p>
-  <input type="submit" name="submit" value="Add to My Portfolio">
-</form>
+<div class="detail">
+  <form class="" action="/property/new" method="POST">
+    <p>Property Name or Location*: <input type="text" name="name" value=""></p>
+    <p>Property Type*: <input type="radio" name="category" value="Residential"> Residential
+      <input type="radio" name="category" value="Commercial"> Commercial </p>
+      <p>Property Value*: $ <input type="decimal" name="value" value=""></p>
+      <input type="submit" name="submit" value="Add to My Portfolio">
+  </form>
+</div>

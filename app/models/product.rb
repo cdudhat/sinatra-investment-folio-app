@@ -1,4 +1,4 @@
 class Product < ActiveRecord::Base
-  validates_presence_of :name, :category, :value
+  validates :name, :category, :value, presence: true
   belongs_to :user
 end

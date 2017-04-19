@@ -10,13 +10,14 @@
   <body>
     <div class="wrapper">
 
+      <!-- Navigation Bar -->
       <% if logged_in? %>
         <div id="textbox">
-          <p class="left" style="margin-bottom: none;">
+          <p class="left">
             <a href="/home">Home</a> |
             <a href="/logout">Logout</a>
           </p>
-          <p class="right" style="margin-bottom: none;">Add NEW -
+          <p class="right">Add NEW -
             <a href="/stock/new">Stock</a> |
             <a href="/product/new">Bank Product</a> |
             <a href="/fund/new">Retirement Fund</a> |
@@ -24,9 +25,11 @@
           </p>
         </div>
         <div style="clear: both;"></div>
-          <p>Hello</p>
+          <p class="right">Current Total Investments Value: $<%= current_user.total_value %></p>
+        <div style="clear: both;"></div>
       <% end %>
 
+      <!-- Title & Sub-title -->
       <h1>Investment Folio Manager</h1>
       <% if @heading %>
         <h2><%= @heading %></h2>
@@ -34,6 +37,7 @@
         <h2><%= @title %></h2>
       <% end %>
 
+      <!-- Flash Message -->
       <div class="flash">
         <% if flash.has?(:message) %>
           <%= flash[:message] %>
@@ -43,6 +47,7 @@
 
         <%= yield %>
 
+      <!-- Footer -->
       <footer class="branding">
         <small>&copy; 2017 <strong>SinatraInvestmentFolioApp</strong></small>
       </footer>

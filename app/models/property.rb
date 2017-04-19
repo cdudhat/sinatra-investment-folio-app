@@ -1,5 +1,5 @@
 class Property < ActiveRecord::Base
   self.table_name = "propertys"
-  validates_presence_of :name, :category, :value
+  validates :name, :category, :value, presence: true
   belongs_to :user
 end
