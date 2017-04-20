@@ -2,6 +2,7 @@ class FundsController < ApplicationController
 
   get '/fund/new' do
     if logged_in?
+      @title = "Add a New Retirement Fund Investment"
       erb :'/funds/new'
     else
       redirect '/login'
@@ -9,71 +10,63 @@ class FundsController < ApplicationController
   end
 
   post '/fund/new' do
-    @fund = Fund.new(name: params[:name], category: params[:category], value: params[:value])
-    @user = current_user
-    if @fund.save
-      @user.funds << @fund
-      @user.total_value += @fund.value
-      @user.save
-      redirect '/home'
+    if logged_in?
+      current_user.funds.create(name: params[:name], category: params[:category], value: params[:value])
+      if current_user.save
+        current_user.update(total_value: current_user.total_value + params[:value].to_f)
+        redirect '/home'
+      else
+        flash[:message] = "The information you entered was incomplete. Please try again."
+        redirect '/fund/new'
+      end
     else
-      flash[:message] = "The information you entered was incomplete. Please try again."
-      redirect '/fund/new'
+      redirect '/failure1'
     end
   end
 
   get '/fund/:id' do
-    if Fund.exists?(params[:id])
-      @fund = Fund.find(params[:id])
-      if logged_in? && current_user.funds.include?(@fund)
-        erb :'/funds/show'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@fund ||= Fund.find_by(id: params[:id])) && @fund.user == current_user
+      @title = "Retirement Fund Investment Details"
+      erb :'/funds/show'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   get '/fund/:id/edit' do
-    if Fund.exists?(params[:id])
-      @fund = Fund.find(params[:id])
-      if logged_in? && current_user.funds.include?(@fund)
-        erb :'/funds/edit'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@fund ||= Fund.find_by(id: params[:id])) && @fund.user == current_user
+      @title = "Update your Retirement Fund Investment"
+      erb :'/funds/edit'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   put '/fund/:id' do
-    @fund = Fund.find(params[:id])
-    @user = current_user
-    @user.total_value -= @fund.value
-    if @fund.update(name: params[:name], category: params[:category], value: params[:value])
-      @user.total_value += @fund.value
-      @user.save
-      redirect '/home'
+    @fund = Fund.find_by(id: params[:id])
+    if @fund.user == current_user
+      new_total_value = (current_user.total_value - @fund.value)
+      if @fund.update(name: params[:name], category: params[:category], value: params[:value]) && current_user.update(total_value: new_total_value + @fund.value)
+        redirect '/home'
+      else
+        flash[:message] = "Empty fields are not permitted. Please try again."
+        redirect "/fund/#{params[:id]}/edit"
+      end
     else
-      flash[:message] = "Empty fields are not permitted. Please try again."
-      redirect "/fund/#{params[:id]}/edit"
+      redirect '/failure2'
     end
   end
 
   delete '/fund/:id' do
-    @fund = Fund.find(params[:id])
-    @user = current_user
-    @user.total_value -= @fund.value
-    @user.save
-    @fund.destroy
-    flash[:message] = "You have successfully removed your Retirement Fund Investment."
-    redirect '/home'
+    @fund = Fund.find_by(id: params[:id])
+    if @fund.user = current_user
+      current_user.update(total_value: current_user.total_value - @fund.value)
+      @fund.destroy
+      flash[:message] = "You have successfully removed your Retirement Fund Investment."
+      redirect '/home'
+    else
+      redirect '/failure2'
+    end
   end
 
 end

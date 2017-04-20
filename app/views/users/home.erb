@@ -1,12 +1,9 @@
-<% @title="Welcome to your Investments Page" %>
-<% @heading="Hi, " + @user.name.to_s + "! Welcome to your Investments Page" %>
-
-<h3>Your Investments - Current Total Investments Value: $<%= @user.total_value %></h3>
+<h3>Your Investments - Current Total Investments Value: $<%= current_user.total_value %></h3>
 
 <!-- STOCKS -->
-<% if !@user.stocks.empty? %>
+<% if !current_user.stocks.empty? %>
   <h3>Stocks</h3>
-  <% @user.stocks.each do |stock| %>
+  <% current_user.stocks.each do |stock| %>
     <ul>
       <li>Company Name/Ticker: <%= stock.name %></li>
       <li>Price per Share: $<%= stock.price %></li>
@@ -29,10 +26,10 @@
 <% end %>
 
 <!-- BANK PRODUCTS -->
-<% if !@user.products.empty? %>
+<% if !current_user.products.empty? %>
   <hr>
   <h3>Bank Products</h3>
-  <% @user.products.each do |product| %>
+  <% current_user.products.each do |product| %>
     <ul>
       <li>Bank Name: <%= product.name %></li>
       <li>Investment Type: <%= product.category %></li>
@@ -55,10 +52,10 @@
 <% end %>
 
 <!-- RETIREMENT FUNDS -->
-<% if !@user.funds.empty? %>
+<% if !current_user.funds.empty? %>
   <hr>
   <h3>Retirement Funds</h3>
-  <% @user.funds.each do |fund| %>
+  <% current_user.funds.each do |fund| %>
     <ul>
       <li>Company / Financial Management Firm: <%= fund.name %></li>
       <li>Fund Type: <%= fund.category %></li>
@@ -81,10 +78,10 @@
 <% end %>
 
 <!-- PROPERTYS -->
-<% if !@user.propertys.empty? %>
+<% if !current_user.propertys.empty? %>
   <hr>
   <h3>Investment Properties</h3>
-  <% @user.propertys.each do |property| %>
+  <% current_user.propertys.each do |property| %>
     <ul>
       <li>Property Name / Location: <%= property.name %></li>
       <li>Property Type: <%= property.category %></li>

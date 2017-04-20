@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
 
   get '/product/new' do
     if logged_in?
+      @title = "Add a New Bank Product Investment"
       erb :'/products/new'
     else
       redirect '/login'
@@ -9,71 +10,63 @@ class ProductsController < ApplicationController
   end
 
   post '/product/new' do
-    @product = Product.new(name: params[:name], category: params[:category], value: params[:value])
-    @user = current_user
-    if @product.save
-      @user.products << @product
-      @user.total_value += @product.value
-      @user.save
-      redirect '/home'
+    if logged_in?
+      current_user.products.create(name: params[:name], category: params[:category], value: params[:value])
+      if current_user.save
+        current_user.update(total_value: current_user.total_value + params[:value].to_f)
+        redirect '/home'
+      else
+        flash[:message] = "The information you entered was incomplete. Please try again."
+        redirect '/product/new'
+      end
     else
-      flash[:message] = "The information you entered was incomplete. Please try again."
-      redirect '/product/new'
+      redirect '/failure1'
     end
   end
 
   get '/product/:id' do
-    if Product.exists?(params[:id])
-      @product = Product.find(params[:id])
-      if logged_in? && current_user.products.include?(@product)
-        erb :'/products/show'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@product ||= Product.find_by(id: params[:id])) && @product.user == current_user
+      @title = "Bank Product Investment Details"
+      erb :'/products/show'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   get '/product/:id/edit' do
-    if Product.exists?(params[:id])
-      @product = Product.find(params[:id])
-      if logged_in? && current_user.products.include?(@product)
-        erb :'/products/edit'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@product ||= Product.find_by(id: params[:id])) && @product.user == current_user
+      @title = "Update your Bank Product Investment"
+      erb :'/products/edit'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   put '/product/:id' do
-    @product = Product.find(params[:id])
-    @user = current_user
-    @user.total_value -= @product.value
-    if @product.update(name: params[:name], category: params[:category], value: params[:value])
-      @user.total_value += @product.value
-      @user.save
-      redirect '/home'
+    @product = Product.find_by(id: params[:id])
+    if @product.user == current_user
+      new_total_value = (current_user.total_value - @product.value)
+      if @product.update(name: params[:name], category: params[:category], value: params[:value]) && current_user.update(total_value: new_total_value + @product.value)
+        redirect '/home'
+      else
+        flash[:message] = "Empty fields are not permitted. Please try again."
+        redirect "/product/#{params[:id]}/edit"
+      end
     else
-      flash[:message] = "Empty fields are not permitted. Please try again."
-      redirect "/product/#{params[:id]}/edit"
+      redirect '/failure2'
     end
   end
 
   delete '/product/:id' do
-    @product = Product.find(params[:id])
-    @user = current_user
-    @user.total_value -= @product.value
-    @user.save
-    @product.destroy
-    flash[:message] = "You have successfully removed your Bank Product Investment."
-    redirect '/home'
+    @product = Product.find_by(id: params[:id])
+    if @product.user = current_user
+      current_user.update(total_value: current_user.total_value - @product.value)
+      @product.destroy
+      flash[:message] = "You have successfully removed your Bank Product Investment."
+      redirect '/home'
+    else
+      redirect '/failure2'
+    end
   end
 
 end

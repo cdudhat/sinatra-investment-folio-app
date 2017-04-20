@@ -2,6 +2,7 @@ class StocksController < ApplicationController
 
   get '/stock/new' do
     if logged_in?
+      @title = "Add a New Stock Investment"
       erb :'/stocks/new'
     else
       redirect '/login'
@@ -9,76 +10,63 @@ class StocksController < ApplicationController
   end
 
   post '/stock/new' do
-    @stock = Stock.new(name: params[:name], price: params[:price], number: params[:number], value: 0)
-    @user = current_user
-    if @stock.save
-      @stock.value = @stock.price*@stock.number
-      @stock.save
-      @user.stocks << @stock
-      @user.total_value += @stock.value
-      @user.save
-      redirect '/home'
+    if logged_in?
+      current_user.stocks.create(name: params[:name], price: params[:price], number: params[:number])
+      if current_user.save
+        current_user.update(total_value: current_user.total_value + (params[:price].to_f*params[:number].to_f))
+        redirect '/home'
+      else
+        flash[:message] = "The information you entered was incomplete. Please try again."
+        redirect '/stock/new'
+      end
     else
-      flash[:message] = "The information you entered was incomplete. Please try again."
-      redirect '/stock/new'
+      redirect '/failure1'
     end
   end
 
   get '/stock/:id' do
-    if Stock.exists?(params[:id])
-      @stock = Stock.find(params[:id])
-      if logged_in? && current_user.stocks.include?(@stock)
-        erb :'/stocks/show'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@stock ||= Stock.find_by(id: params[:id])) && @stock.user == current_user
+      @title = "Stock Investment Details"
+      erb :'/stocks/show'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   get '/stock/:id/edit' do
-    if Stock.exists?(params[:id])
-      @stock = Stock.find(params[:id])
-      if logged_in? && current_user.stocks.include?(@stock)
-        erb :'/stocks/edit'
-      else
-        flash[:message] = "The page you requested does not exist."
-        redirect '/home'
-      end
+    if (@stock ||= Stock.find_by(id: params[:id])) && @stock.user == current_user
+      @title = "Update your Stock Investment"
+      erb :'/stocks/edit'
     else
-      flash[:message] = "The page you requested does not exist."
-      redirect '/home'
+      redirect '/failure1'
     end
   end
 
   put '/stock/:id' do
-    @stock = Stock.find(params[:id])
-    @user = current_user
-    @user.total_value -= @stock.value
-
-    if @stock.update(name: params[:name], price: params[:price], number: params[:number])
-      @stock.value = @stock.price*@stock.number
-      @stock.save
-      @user.total_value += @stock.value
-      @user.save
-      redirect '/home'
+    @stock = Stock.find_by(id: params[:id])
+    if @stock.user == current_user
+      new_total_value = (current_user.total_value - (@stock.price*@stock.number))
+      if @stock.update(name: params[:name], price: params[:price], number: params[:number]) && current_user.update(total_value: new_total_value + (@stock.price*@stock.number))
+        redirect '/home'
+      else
+        flash[:message] = "Empty fields are not permitted. Please try again."
+        redirect "/stock/#{params[:id]}/edit"
+      end
     else
-      flash[:message] = "Empty fields are not permitted. Please try again."
-      redirect "/stock/#{params[:id]}/edit"
+      redirect '/failure2'
     end
   end
 
   delete '/stock/:id' do
-    @stock = Stock.find(params[:id])
-    @user = current_user
-    @user.total_value -= @stock.value
-    @user.save
-    @stock.destroy
-    flash[:message] = "You have successfully removed your Stock Investment."
-    redirect '/home'
+    @stock = Stock.find_by(id: params[:id])
+    if @stock.user = current_user
+      current_user.update(total_value: current_user.total_value - (@stock.price*@stock.number))
+      @stock.destroy
+      flash[:message] = "You have successfully removed your Stock Investment."
+      redirect '/home'
+    else
+      redirect '/failure2'
+    end
   end
 
 end
